@@ -1,0 +1,7 @@
+body {
+    background-color: #080424;
+    background-repeat: repeat-y;
+    margin: 5px; 
+    background-image: url('bitmap.png'); 
+    background-size: cover;
+}
