@@ -5,3 +5,20 @@ body {
     background-image: url('bitmap.png'); 
     background-size: cover;
 }
+
+.title {
+    color: #fff; 
+    margin: 10px; 
+    text-align: center;
+}
+
+.heading {
+    color: #fff; 
+    margin: 5px; 
+    text-align: left;
+}
+
+.control-label {
+    color: #fff; 
+    margin: 5px; 
+}

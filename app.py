@@ -20,6 +20,33 @@ app_ui = ui.page_fixed(
     ui.row(
         ui.tags.h2({"class": "title"}, "Osmosis Swap Simulator")
     ), 
+    ui.row(
+        ui.column(
+            5, 
+            ui.row(
+                ui.tags.h5({"class": "heading"}, "Input Values"), 
+            ), 
+            ui.row(
+                ui.column(
+                    3, 
+                ), 
+                ui.column(
+                    3, 
+                    ui.input_select("pool", "Pool", pool_id['POOL_ID']), 
+                ), 
+                ui.column(
+                    3, 
+                    ui.input_numeric("fee", "% Pool Fee", value = 0.2, step = 0.05), 
+                ), 
+                ui.column(
+                    3, 
+                ),
+            ), 
+        ), 
+        ui.column(
+            7, 
+        ), 
+    ),
 )
 
 def server(input: Inputs, output: Outputs, session: Session):
