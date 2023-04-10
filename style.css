@@ -22,3 +22,23 @@ body {
     color: #fff; 
     margin: 5px; 
 }
+
+.output_text {
+    text-align: center;
+    color: #d2d0ff; 
+    padding: 5px;
+    font-size: large;
+}
+
+.col-label {
+    text-align: left;
+    color: #d2d0ff; 
+    padding: 5px;
+    vertical-align: top;
+    font-size: large;
+    margin: 0px;
+}
+
+hr {
+    border-top: 1px solid #d2d0ff
+}
