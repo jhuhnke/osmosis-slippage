@@ -18,6 +18,12 @@ body {
     text-align: left;
 }
 
+.pool-price {
+    color: #fff; 
+    margin: 5px; 
+    text-align: center;
+}
+
 .control-label {
     color: #fff; 
     margin: 5px; 

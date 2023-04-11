@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import datetime as dt
 import numpy as np
 import requests
 import json 
@@ -11,10 +13,15 @@ pool_ids = requests.get("https://node-api.flipsidecrypto.com/api/v2/queries/3554
 pools = pool_ids.json()
 pool_id = json_normalize(pools)
 
-# Import Price Data 
+# Import Price Data - Current
 token_price = requests.get("https://api.flipsidecrypto.com/api/v2/queries/d539a543-59c8-48e9-a60a-bc3b54998eea/data/latest")
 prices = token_price.json()
 price = json_normalize(prices)
+
+## Import Price Data - Last 14 Days
+tp = requests.get("https://api.flipsidecrypto.com/api/v2/queries/ca9e5cd1-410d-4577-a84c-4958a18c547c/data/latest")
+p = tp.json()
+pp = json_normalize(p)
 
 app_ui = ui.page_fixed(
     ui.tags.head(
@@ -121,6 +128,21 @@ app_ui = ui.page_fixed(
             ui.row(
                 ui.hr()
             ),
+            ## Pool Price
+            ui.row(
+                ui.tags.h5({"class": "pool-price"}, "Pool Price"), 
+            ), 
+            ui.row(
+                ui.output_text_verbatim("pool_price"), 
+            ), 
+            ## Chart of Pool Price 
+            ui.row(
+                ui.output_plot("rel_pool_price")
+            ),
+        ), 
+        ## Right Hand Column
+        ui.column(
+            6,
             ## Section Title
             ui.row(
                 ui.tags.h5({"class": "heading"}, "Swap Parameters"), 
@@ -142,20 +164,19 @@ app_ui = ui.page_fixed(
                 ui.column(
                     3, 
                 ), 
-            ),
-        ), 
-        ui.column(
-            7, 
+            ), 
         ), 
     ),
 )
 
 def server(input: Inputs, output: Outputs, session: Session):
+    ## This Function Grabs The Current / Live Price
     @reactive.Calc
     async def get_price(): 
         if input.pool() == "": 
             return ""
         
+        rel_price = 0
         ## Grab the asset symbols from the pool ID 
         asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
         asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
@@ -164,7 +185,9 @@ def server(input: Inputs, output: Outputs, session: Session):
         price0 = sum(price.loc[price["SYMBOL"] == asset0, "PRICE"])
         price1 = sum(price.loc[price["SYMBOL"] == asset1, "PRICE"])
 
-        return price0, price1
+        rel_price = price1/price0
+
+        return price0, price1, rel_price, asset0, asset1
     
     @output
     @render.text
@@ -189,6 +212,49 @@ def server(input: Inputs, output: Outputs, session: Session):
     async def price1(): 
         prices = await get_price()
         return f"${round(prices[1], 3)}"
+    
+    @output
+    @render.text
+    async def pool_price(): 
+        prices = await get_price()
+        return f"{round(prices[2], 3)} {prices[3]} per {prices[4]}"
+    
+    ## Creates Relative Price Plot
+    @output
+    @render.plot()
+    async def rel_pool_price(): 
+
+        asset0 = pool_id.loc[0, "SYMBOL_1"]
+        asset1 = pool_id.loc[0, "SYMBOL_2"]
+
+       ## Mean Price 
+        price0 = pp.loc[pp["SYMBOL"] == asset0, "MEAN_PRICE"]
+        price1 = pp.loc[pp["SYMBOL"] == asset1, "MEAN_PRICE"]
+
+        ## Min Price 
+        min0 = pp.loc[pp["SYMBOL"] == asset0, "MIN_PRICE"]
+        min1 = pp.loc[pp["SYMBOL"] == asset1, "MIN_PRICE"]
+        rel_min = min1.values / min0.values
+
+        # Max Price 
+        max0 = pp.loc[pp["SYMBOL"] == asset0, "MAX_PRICE"]
+        max1 = pp.loc[pp["SYMBOL"] == asset1, "MAX_PRICE"]
+        rel_max = max1.values / max0.values
+
+        date = pp.loc[pp["SYMBOL"]== asset0, "DATE"]
+        x_d = date.values
+        rel_price = price1.values/price0.values
+        err = rel_max - rel_min
+
+        fig, ax=plt.subplots()
+        ax.errorbar(x_d, rel_price, err, fmt='o')
+        # Rotates and right-aligns the x labels so they don't crowd each other.
+        for label in ax.get_xticklabels():
+            label.set(rotation=30, horizontalalignment='right')
+        for label in ax.xaxis.get_ticklabels()[::2]:
+            label.set_visible(False)
+
+        return fig
 
 www_dir = Path(__file__).parent / "www"
 app = App(app_ui, server, debug=True, static_assets=www_dir)
