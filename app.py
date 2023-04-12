@@ -23,6 +23,11 @@ tp = requests.get("https://api.flipsidecrypto.com/api/v2/queries/ca9e5cd1-410d-4
 p = tp.json()
 pp = json_normalize(p)
 
+## Import Pool Depth Information 
+poold = requests.get("https://api.flipsidecrypto.com/api/v2/queries/a7caa828-df39-4216-9a4f-cbfc9048c26b/data/latest")
+pool_depth = poold.json()
+pool_depth = json_normalize(pool_depth)
+
 app_ui = ui.page_fixed(
     ui.tags.head(
         ui.tags.style(
@@ -139,6 +144,17 @@ app_ui = ui.page_fixed(
             ui.row(
                 ui.output_plot("rel_pool_price")
             ),
+            ## Line Break 
+            ui.row(
+                ui.hr()
+            ),
+            ## Pool Depth
+            ui.row(
+                ui.tags.h5({"class": "pool-price"}, "Pool Depth"), 
+            ), 
+            ui.row(
+                ui.output_plot("rel_pool_depth")
+            )
         ), 
         ## Right Hand Column
         ui.column(
@@ -224,8 +240,8 @@ def server(input: Inputs, output: Outputs, session: Session):
     @render.plot()
     async def rel_pool_price(): 
 
-        asset0 = pool_id.loc[0, "SYMBOL_1"]
-        asset1 = pool_id.loc[0, "SYMBOL_2"]
+        asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
+        asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
 
        ## Mean Price 
         price0 = pp.loc[pp["SYMBOL"] == asset0, "MEAN_PRICE"]
@@ -253,6 +269,30 @@ def server(input: Inputs, output: Outputs, session: Session):
             label.set(rotation=30, horizontalalignment='right')
         for label in ax.xaxis.get_ticklabels()[::2]:
             label.set_visible(False)
+
+        return fig
+    
+    ## Creates Pool Depth Plot
+    @output
+    @render.plot()
+    async def rel_pool_depth(): 
+        asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
+        asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
+
+        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_0_AMOUNT"]
+        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_1_AMOUNT"]
+
+        ## Create xy = k curve
+        k = amt0*amt1
+        amt0_new = []
+        amt1_new = np.linspace(amt1/2, amt1+amt1/2, 200)
+        for i in range(0, len(amt1_new)): 
+            amt0_new.append(k/amt1_new[i])
+
+        fig, ax=plt.subplots()
+        ax.plot(amt0_new, amt1_new, '-', amt0, amt1, 'o')
+        plt.xlabel(asset0)
+        plt.ylabel(asset1)
 
         return fig
 
