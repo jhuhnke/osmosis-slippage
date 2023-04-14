@@ -163,24 +163,44 @@ app_ui = ui.page_fixed(
             ui.row(
                 ui.tags.h5({"class": "heading"}, "Swap Parameters"), 
             ), 
-            ## Input Number Of Tokens
+            ## Input Token In
             ui.row(
                 ui.column(
                     3,
-                    ui.tags.h6({"class": "col-label"}, "# Tokens"),
+                    ui.tags.h6({"class": "col-label"}, "Token In"),
                 ), 
                 ui.column(
                     3, 
-                    ui.input_numeric("t1", None, value = 1),
+                    ui.input_text("t_in", None, value = 'ATOM'),
                 ), 
                 ui.column(
                     3, 
-                    ui.input_numeric("t2", None, value = 1),
+                    ui.input_numeric("t_in_amt", None, value = 1),
                 ), 
                 ui.column(
                     3, 
                 ), 
             ), 
+            ## Token Out 
+               ## Input Number Of Tokens
+            ui.row(
+                ui.column(
+                    3,
+                    ui.tags.h6({"class": "col-label"}, "Token Out"),
+                ), 
+                ui.column(
+                    3, 
+                    ui.input_text("t_out", None, value = 'OSMO'),
+                ), 
+                ## Need to change this to output
+                ui.column(
+                    3, 
+                    ui.output_text_verbatim("t_out_amt"),
+                ), 
+                ui.column(
+                    3, 
+                ), 
+            ),
         ), 
     ),
 )
