@@ -294,7 +294,7 @@ def server(input: Inputs, output: Outputs, session: Session):
         else: 
             t_out_amt = amt0.values - (amt0.values*amt1.values)/(amt1.values+input.t_in_amt()) 
 
-        return f"{t_out_amt}"
+        return f"{round(t_out_amt[0], 3)}"
     
     
     ## Creates Relative Price Plot
