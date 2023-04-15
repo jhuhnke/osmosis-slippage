@@ -73,6 +73,19 @@ app_ui = ui.page_fixed(
                     3, 
                 ),
             ), 
+            # Pool Fee Input Values
+            ui.row(
+                ui.column(
+                    3, 
+                ), 
+                ui.column(
+                    6, 
+                    ui.input_numeric("pool_fee", "Percentage Swap Fee", value=0.2), 
+                ), 
+                ui.column(
+                    3, 
+                ),
+            ), 
             ## Token 1 & Token 2 Labels
             ui.row(
                 ui.column(
@@ -125,36 +138,24 @@ app_ui = ui.page_fixed(
                     3, 
                 ), 
             ), 
+            ## Last block updates
+            ui.row(
+                ui.column(
+                    12, 
+                    ui.output_text_verbatim("last_time"), 
+                ), 
+            ), 
+            ## Last block 
+            ui.row(
+                ui.column(
+                    12, 
+                    ui.output_text_verbatim("last_block"), 
+                ), 
+            ), 
             ## Line Break 
             ui.row(
                 ui.hr()
             ),
-            ## Pool Price
-            ui.row(
-                ui.tags.h5({"class": "pool-price"}, "Pool Price"), 
-            ), 
-            ui.row(
-                ui.output_text_verbatim("pool_price"), 
-            ), 
-            ## Chart of Pool Price 
-            ui.row(
-                ui.output_plot("rel_pool_price")
-            ),
-            ## Line Break 
-            ui.row(
-                ui.hr()
-            ),
-            ## Pool Depth
-            ui.row(
-                ui.tags.h5({"class": "pool-price"}, "Pool Depth"), 
-            ), 
-            ui.row(
-                ui.output_plot("rel_pool_depth")
-            )
-        ), 
-        ## Right Hand Column
-        ui.column(
-            6,
             ## Section Title
             ui.row(
                 ui.tags.h5({"class": "heading"}, "Swap Parameters"), 
@@ -178,7 +179,7 @@ app_ui = ui.page_fixed(
                 ), 
             ), 
             ## Token Out 
-               ## Input Number Of Tokens
+            ## Input Number Of Tokens
             ui.row(
                 ui.column(
                     3,
@@ -196,6 +197,68 @@ app_ui = ui.page_fixed(
                 ui.column(
                     3, 
                 ), 
+            ),
+            ## Slippage Losses
+            ui.row(
+                ui.column(
+                    3,
+                    ui.tags.h6({"class": "col-label"}, "Slippage"),
+                ), 
+                ui.column(
+                    3, 
+                    ui.output_text_verbatim("t_slip"),
+                ), 
+                ui.column(
+                    3, 
+                    ui.output_text_verbatim("usd_slip"),
+                ), 
+                ui.column(
+                    3, 
+                ), 
+            ),
+            ## Fees Paid
+            ui.row(
+                ui.column(
+                    3,
+                    ui.tags.h6({"class": "col-label"}, "Fees Paid"),
+                ), 
+                ui.column(
+                    3, 
+                    ui.output_text_verbatim("fee_paid"),
+                ), 
+                ui.column(
+                    3, 
+                    ui.output_text_verbatim("usd_fee"),
+                ), 
+                ui.column(
+                    3, 
+                ), 
+            ),
+        ), 
+        ## Right Hand Column
+        ui.column(
+            6,
+            ## Pool Price
+            ui.row(
+                ui.tags.h5({"class": "pool-price"}, "Pool Price"), 
+            ), 
+            ui.row(
+                ui.output_text_verbatim("pool_price"), 
+            ), 
+            ## Chart of Pool Price 
+            ui.row(
+                ui.output_plot("rel_pool_price")
+            ),
+            ## Line Break 
+            ui.row(
+                ui.hr()
+            ),
+            ## Pool Depth
+            ui.row(
+                ui.tags.h5({"class": "pool-price"}, "Pool Depth"), 
+            ), 
+            ui.row(
+                ui.output_plot("rel_pool_depth")
             ),
         ), 
     ),
@@ -234,7 +297,30 @@ def server(input: Inputs, output: Outputs, session: Session):
             else: 
                 out_exp_amt = input.t_in_amt()*(1 / rel_price)
 
-        return price0, price1, rel_price, asset0, asset1, out_exp_amt
+        ## Slippage calculations
+        t_in = input.t_in()
+        t_in_amt = input.t_in_amt()
+
+        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_0_AMOUNT"]
+        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_1_AMOUNT"]
+
+        time = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "BLOCK_TIMESTAMP"]
+        block = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "BLOCK_ID"]
+
+        if input.t_in() == asset0: 
+            t_out_amt1 = amt1.values - (amt0.values*amt1.values)/(amt0.values+input.t_in_amt())
+            fee = t_out_amt1*input.pool_fee()/100
+            t_out_amt = t_out_amt1 - fee
+            usd_out_amt = price1*t_out_amt
+            usd_fee = fee*price1
+        else: 
+            t_out_amt1 = amt0.values - (amt0.values*amt1.values)/(amt1.values+input.t_in_amt()) 
+            fee = t_out_amt1*input.pool_fee()/100
+            t_out_amt = t_out_amt1 - fee
+            usd_out_amt = price0*t_out_amt
+            usd_fee = fee*price0
+
+        return price0, price1, rel_price, asset0, asset1, out_exp_amt, t_out_amt, usd_out_amt, time, block, fee, usd_fee
     
     @output
     @render.text
@@ -286,23 +372,46 @@ def server(input: Inputs, output: Outputs, session: Session):
     @render.text 
     async def t_out_amt(): 
         prices = await get_price()
-        expected = prices[5]
-
-        asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
-        asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
-
-        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_0_AMOUNT"]
-        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_1_AMOUNT"]
-
-        t_in = input.t_in()
-        t_in_amt = input.t_in_amt()
-
-        if input.t_in() == asset0: 
-            t_out_amt = amt1.values - (amt0.values*amt1.values)/(amt0.values+input.t_in_amt())
-        else: 
-            t_out_amt = amt0.values - (amt0.values*amt1.values)/(amt1.values+input.t_in_amt()) 
-
-        return f"{round(prices[5] - t_out_amt[0], 3)}"
+        return f"{round(prices[5] - prices[6][0], 3)}"
+    
+    ## Slippage Output 
+    @output
+    @render.text
+    async def t_slip(): 
+        prices = await get_price()
+        return f"{round(prices[6][0], 3)}"
+    
+    @output 
+    @render.text 
+    async def usd_slip(): 
+        prices = await get_price()
+        return f"${round(prices[7][0], 3)}"
+    
+    ## Recency Outputs 
+    @output
+    @render.text
+    async def last_time(): 
+        prices = await get_price()
+        return f"Last Pool Update: {prices[8][0]} UTC"
+    
+    @output
+    @render.text
+    async def last_block(): 
+        prices = await get_price()
+        return f"Last Block: {prices[9][0]}"
+    
+    ## Output fees paid 
+    @output 
+    @render.text
+    async def fee_paid(): 
+        prices = await get_price()
+        return f"{round(prices[10][0], 5)}"
+    
+    @output
+    @render.text
+    async def usd_fee(): 
+        prices = await get_price()
+        return f"${round(prices[11][0], 5)}"
     
     
     ## Creates Relative Price Plot
