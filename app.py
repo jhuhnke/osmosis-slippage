@@ -66,12 +66,8 @@ app_ui = ui.page_fixed(
                     3, 
                 ), 
                 ui.column(
-                    3, 
-                    ui.input_select("pool", "Pool", pool_id['POOL_ID']), 
-                ), 
-                ui.column(
-                    3, 
-                    ui.input_numeric("fee", "% Pool Fee", value = 0.2, step = 0.05), 
+                    6, 
+                    ui.input_select("pool", "Pool", pool_id['POOL_NAME']), 
                 ), 
                 ui.column(
                     3, 
@@ -190,7 +186,7 @@ app_ui = ui.page_fixed(
                 ), 
                 ui.column(
                     3, 
-                    ui.input_text("t_out", None, value = 'OSMO'),
+                    ui.output_text_verbatim("t_out"),
                 ), 
                 ## Need to change this to output
                 ui.column(
@@ -225,6 +221,8 @@ def server(input: Inputs, output: Outputs, session: Session):
             rel_price = price1/price0
         else: 
             rel_price = price0/price1
+
+        print(input.t_in_amt())
 
         ## Grab the asset in & the amount, calculate the expected token amount
         if input.t_in() == 'asset0':
@@ -273,6 +271,18 @@ def server(input: Inputs, output: Outputs, session: Session):
         else: 
             return f"{round(prices[2], 3)} {prices[4]} per {prices[3]}"
 
+    ## Output token 
+    @output 
+    @render.text 
+    async def t_out(): 
+        asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
+        asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
+
+        if input.t_in() == asset0: 
+            return asset1
+        else: 
+            return asset0
+    
     ## Calculate the amount of token received    
     @output
     @render.text 
