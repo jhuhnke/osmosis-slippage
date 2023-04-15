@@ -221,7 +221,10 @@ def server(input: Inputs, output: Outputs, session: Session):
         price0 = sum(price.loc[price["SYMBOL"] == asset0, "PRICE"])
         price1 = sum(price.loc[price["SYMBOL"] == asset1, "PRICE"])
 
-        rel_price = price1/price0
+        if int(price0) < int(price1):
+            rel_price = price1/price0
+        else: 
+            rel_price = price0/price1
 
         return price0, price1, rel_price, asset0, asset1
     
@@ -253,7 +256,10 @@ def server(input: Inputs, output: Outputs, session: Session):
     @render.text
     async def pool_price(): 
         prices = await get_price()
-        return f"{round(prices[2], 3)} {prices[3]} per {prices[4]}"
+        if prices[0] < prices[1]:
+            return f"{round(prices[2], 3)} {prices[3]} per {prices[4]}"
+        else: 
+            return f"{round(prices[2], 3)} {prices[4]} per {prices[3]}"
     
     ## Creates Relative Price Plot
     @output
@@ -270,16 +276,25 @@ def server(input: Inputs, output: Outputs, session: Session):
         ## Min Price 
         min0 = pp.loc[pp["SYMBOL"] == asset0, "MIN_PRICE"]
         min1 = pp.loc[pp["SYMBOL"] == asset1, "MIN_PRICE"]
-        rel_min = min1.values / min0.values
+        if price0.iloc[0] < price1.iloc[1]:
+            rel_min = min1.values / min0.values
+        else: 
+            rel_min = min0.values / min1.values
 
         # Max Price 
         max0 = pp.loc[pp["SYMBOL"] == asset0, "MAX_PRICE"]
         max1 = pp.loc[pp["SYMBOL"] == asset1, "MAX_PRICE"]
-        rel_max = max1.values / max0.values
+        if price0.iloc[0] < price1.iloc[1]:
+            rel_max = max1.values / max0.values
+        else: 
+            rel_max = max0.values / max1.values
 
         date = pp.loc[pp["SYMBOL"]== asset0, "DATE"]
         x_d = date.values
-        rel_price = price1.values/price0.values
+        if price0.iloc[0] < price1.iloc[1]:
+            rel_price = price1.values/price0.values
+        else:
+            rel_price = price0.values/price1.values
         err = rel_max - rel_min
 
         fig, ax=plt.subplots()
@@ -296,6 +311,7 @@ def server(input: Inputs, output: Outputs, session: Session):
     @output
     @render.plot()
     async def rel_pool_depth(): 
+        
         asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
         asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
 
