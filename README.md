@@ -3,7 +3,7 @@ This tool allows the user to simulate trades through a liquidity pool on Osmosis
 
 ## Aims :dart:
 
-The aim of this application is to allow users to see how trades on Osmosis Zone are affected by slippage. Users can select a liquidity pool they wish to simulate as well as size of the trade. 
+The aim of this application is to allow users to see how trades on Osmosis Zone are affected by slippage. Users can select a liquidity pool they wish to simulate as well as size of the trade. Many new tokens may only be available in liquidity pools with minimal depth, and thus trading can be severly impacted by slippage. While the default slippage percentage is set at 1%, users can toggle this setting to allow for greater slippage.
 
 Right now, this application utilizes [Flipside Crypto](https://flipsidecrypto.xyz/) Osmosis data to monitor transactions. Flipside Crypto does not provide live data, but data on a 12 hour delay. So transactions performed within the last 12 hours will not be immediately available on the application.  
 
