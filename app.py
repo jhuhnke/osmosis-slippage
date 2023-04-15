@@ -226,7 +226,19 @@ def server(input: Inputs, output: Outputs, session: Session):
         else: 
             rel_price = price0/price1
 
-        return price0, price1, rel_price, asset0, asset1
+        ## Grab the asset in & the amount, calculate the expected token amount
+        if input.t_in() == 'asset0':
+            if int(price0) < int(price1):
+                out_exp_amt = input.t_in_amt()*(1 / rel_price)
+            else: 
+                out_exp_amt = input.t_in_amt()*rel_price
+        else: 
+            if int(price0) < int(price1): 
+                out_exp_amt = input.t_in_amt()*rel_price
+            else: 
+                out_exp_amt = input.t_in_amt()*(1 / rel_price)
+
+        return price0, price1, rel_price, asset0, asset1, out_exp_amt
     
     @output
     @render.text
@@ -260,6 +272,30 @@ def server(input: Inputs, output: Outputs, session: Session):
             return f"{round(prices[2], 3)} {prices[3]} per {prices[4]}"
         else: 
             return f"{round(prices[2], 3)} {prices[4]} per {prices[3]}"
+
+    ## Calculate the amount of token received    
+    @output
+    @render.text 
+    async def t_out_amt(): 
+        prices = await get_price()
+        expected = prices[5]
+
+        asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
+        asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
+
+        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_0_AMOUNT"]
+        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_1_AMOUNT"]
+
+        t_in = input.t_in()
+        t_in_amt = input.t_in_amt()
+
+        if input.t_in() == asset0: 
+            t_out_amt = amt1.values - (amt0.values*amt1.values)/(amt0.values+input.t_in_amt())
+        else: 
+            t_out_amt = amt0.values - (amt0.values*amt1.values)/(amt1.values+input.t_in_amt()) 
+
+        return f"{t_out_amt}"
+    
     
     ## Creates Relative Price Plot
     @output
