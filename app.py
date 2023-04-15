@@ -222,10 +222,8 @@ def server(input: Inputs, output: Outputs, session: Session):
         else: 
             rel_price = price0/price1
 
-        print(input.t_in_amt())
-
         ## Grab the asset in & the amount, calculate the expected token amount
-        if input.t_in() == 'asset0':
+        if input.t_in() == asset0:
             if int(price0) < int(price1):
                 out_exp_amt = input.t_in_amt()*(1 / rel_price)
             else: 
@@ -304,7 +302,7 @@ def server(input: Inputs, output: Outputs, session: Session):
         else: 
             t_out_amt = amt0.values - (amt0.values*amt1.values)/(amt1.values+input.t_in_amt()) 
 
-        return f"{round(t_out_amt[0], 3)}"
+        return f"{round(prices[5] - t_out_amt[0], 3)}"
     
     
     ## Creates Relative Price Plot
