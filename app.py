@@ -283,8 +283,8 @@ def server(input: Inputs, output: Outputs, session: Session):
         asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
         asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
 
-        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_0_AMOUNT"]
-        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_1_AMOUNT"]
+        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_0_AMOUNT"]
+        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_1_AMOUNT"]
 
         t_in = input.t_in()
         t_in_amt = input.t_in_amt()
@@ -348,11 +348,14 @@ def server(input: Inputs, output: Outputs, session: Session):
     @render.plot()
     async def rel_pool_depth(): 
         
+        if input.pool() == "": 
+            return ""
+        
         asset0 = pool_id.loc[int(input.pool()), "SYMBOL_1"]
         asset1 = pool_id.loc[int(input.pool()), "SYMBOL_2"]
 
-        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_0_AMOUNT"]
-        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool()), "TOKEN_1_AMOUNT"]
+        amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_0_AMOUNT"]
+        amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_1_AMOUNT"]
 
         ## Create xy = k curve
         k = amt0*amt1
