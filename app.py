@@ -304,8 +304,9 @@ def server(input: Inputs, output: Outputs, session: Session):
         amt0 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_0_AMOUNT"]
         amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_1_AMOUNT"]
 
-        time = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "BLOCK_TIMESTAMP"]
-        block = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "BLOCK_ID"]
+        time = pool_depth.loc[int(input.pool()), "BLOCK_TIMESTAMP"]
+        print(time)
+        block = pool_depth.loc[int(input.pool()), "BLOCK_ID"]
 
         if input.t_in() == asset0: 
             t_out_amt1 = amt1.values - (amt0.values*amt1.values)/(amt0.values+input.t_in_amt())
@@ -392,13 +393,13 @@ def server(input: Inputs, output: Outputs, session: Session):
     @render.text
     async def last_time(): 
         prices = await get_price()
-        return f"Last Pool Update: {prices[8][0]} UTC"
+        return f"Last Pool Update: {prices[8]} UTC"
     
     @output
     @render.text
     async def last_block(): 
         prices = await get_price()
-        return f"Last Block: {prices[9][0]}"
+        return f"Last Block: {prices[9]}"
     
     ## Output fees paid 
     @output 
