@@ -452,12 +452,27 @@ def server(input: Inputs, output: Outputs, session: Session):
         err = rel_max - rel_min
 
         fig, ax=plt.subplots()
-        ax.errorbar(x_d, rel_price, err, fmt='o')
+        fig.patch.set_facecolor('#140e35')
+        ax.errorbar(x_d, rel_price, err, fmt='o', color='#e13cbd')
         # Rotates and right-aligns the x labels so they don't crowd each other.
         for label in ax.get_xticklabels():
             label.set(rotation=30, horizontalalignment='right')
         for label in ax.xaxis.get_ticklabels()[::2]:
             label.set_visible(False)
+
+        ax.set_facecolor("#140e35")
+
+        ## Hide top & right Axes
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['left'].set_visible(True)
+        ax.spines['bottom'].set_visible(True)
+
+        ## Recolor showing Axes
+        ax.spines['bottom'].set_color('#d2d0ff')
+        ax.spines['left'].set_color('#d2d0ff')
+        ax.tick_params(axis='x', colors='#d2d0ff')
+        ax.tick_params(axis='y', colors='#d2d0ff')
 
         return fig
     
@@ -483,9 +498,25 @@ def server(input: Inputs, output: Outputs, session: Session):
             amt0_new.append(k/amt1_new[i])
 
         fig, ax=plt.subplots()
-        ax.plot(amt0_new, amt1_new, '-', amt0, amt1, 'o')
+        fig.patch.set_facecolor('#140e35')
+        ax.plot(amt0_new, amt1_new, '#e13cbd', amt0, amt1, 'o')
         plt.xlabel(asset0)
         plt.ylabel(asset1)
+        ax.set_facecolor("#140e35")
+
+        ## Hide Axes
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['left'].set_visible(True)
+        ax.spines['bottom'].set_visible(True)
+
+        ## Recolor showing Axes
+        ax.spines['bottom'].set_color('#d2d0ff')
+        ax.spines['left'].set_color('#d2d0ff')
+        ax.tick_params(axis='x', colors='#d2d0ff')
+        ax.tick_params(axis='y', colors='#d2d0ff')
+        ax.yaxis.label.set_color('#d2d0ff')
+        ax.xaxis.label.set_color('#d2d0ff')
 
         return fig
 

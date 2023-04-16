@@ -18,6 +18,43 @@ body {
     text-align: left;
 }
 
+.shiny-bound-input:not(:hover) {
+    text-align: right;
+    color: #d2d0ff; 
+    padding: 5px; 
+    background-color: #140e35;
+    outline-width: light;
+    outline-color: #e13cbd;
+    outline-style: solid;
+    border: none;
+    font-size: medium; 
+    vertical-align: center;
+}
+
+.shiny-bound-input:hover {
+    text-align: right;
+    color: #d2d0ff; 
+    padding: 5px; 
+    background-color: #140e35;
+    outline-width: light;
+    outline-color: #e13cbd;
+    outline-style: solid;
+    border: none;
+    font-size: medium; 
+    vertical-align: center;
+}
+
+.shiny-text-output {
+    text-align: left;
+    color: #d2d0ff; 
+    padding: 5px; 
+    background-color: #140e35;
+    border: none; 
+    text-align: right;
+    font-size: medium;
+    vertical-align: bottom; 
+}
+
 .pool-price {
     color: #fff; 
     margin: 5px; 
