@@ -18,6 +18,11 @@ body {
     text-align: left;
 }
 
+.instructions {
+    color: #d2d0ff;
+    margin: 5px;
+}
+
 .shiny-bound-input:not(:hover) {
     text-align: right;
     color: #d2d0ff; 

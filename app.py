@@ -60,6 +60,9 @@ app_ui = ui.page_fixed(
             ui.row(
                 ui.tags.h5({"class": "heading"}, "Pool Information"), 
             ), 
+            ui.row(
+                ui.tags.p({"class": "instructions"}, "Search: click dropdown > backspace/ delete > type")
+            ), 
             # Pool Info Input Values
             ui.row(
                 ui.column(
