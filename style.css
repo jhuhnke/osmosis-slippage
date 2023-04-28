@@ -7,9 +7,36 @@ body {
 }
 
 .title {
-    color: #fff; 
+    color: #d2d0ff; 
     margin: 10px; 
+    padding: 10px; 
     text-align: center;
+    vertical-align: bottom;
+}
+
+.plug {
+    color: #d2d0ff; 
+    margin: 10px; 
+    padding: 10px; 
+    text-align: center; 
+    vertical-align: bottom;
+}
+
+.double-col {
+    width: 100%;
+    min-height: 300px; 
+    margin: 0 auto; 
+    display: -webkit-flex; 
+    display: flex;  
+}
+
+.double-col .col-sm-6 {
+    padding: 30px; 
+    background-color: #140e35;
+    -webkit-flex: 1; 
+    -ms-flex: 1; 
+    flex: 1; 
+    border-radius: 25px; 
 }
 
 .heading {
