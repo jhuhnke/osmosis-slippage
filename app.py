@@ -56,220 +56,248 @@ app_ui = ui.page_fixed(
         ui.hr()
     ),
     ## Row With Main Content
-        ui.row(
-            ui.tags.div({"class": "double-col"}, {"id": "group"},
-                ## Pool Information Column
-                ui.column(
-                    6,
-                    ui.tags.div({"class": "col"},  
-                        ui.row(
-                            ui.tags.h5({"class": "heading"}, "Pool Information"), 
+    ui.row(
+        ui.tags.div({"class": "double-col"}, {"id": "group"},
+            ## Pool Information Column
+            ui.column(
+                6,
+                ui.tags.div({"class": "col-right"},  
+                    ui.row(
+                        ui.tags.h5({"class": "heading"}, "Pool Information"), 
+                    ), 
+                    ui.row(
+                        ui.tags.p({"class": "instructions"}, "Search: click dropdown > backspace/ delete > type")
+                    ), 
+                    # Pool Info Input Values
+                    ui.row(
+                        ui.column(
+                            3, 
                         ), 
-                        ui.row(
-                            ui.tags.p({"class": "instructions"}, "Search: click dropdown > backspace/ delete > type")
+                        ui.column(
+                            6, 
+                            ui.input_select("pool", "Pool", pool_id['POOL_NAME']), 
                         ), 
-                        # Pool Info Input Values
-                        ui.row(
-                            ui.column(
-                                3, 
-                            ), 
-                            ui.column(
-                                6, 
-                                ui.input_select("pool", "Pool", pool_id['POOL_NAME']), 
-                            ), 
-                            ui.column(
-                                3, 
-                            ),
-                        ), 
-                        # Pool Fee Input Values
-                        ui.row(
-                            ui.column(
-                                3, 
-                            ), 
-                            ui.column(
-                                6, 
-                                ui.input_numeric("pool_fee", "Percentage Swap Fee", value=0.2), 
-                            ), 
-                            ui.column(
-                                3, 
-                            ),
-                        ), 
-                        ## Token 1 & Token 2 Labels
-                        ui.row(
-                            ui.column(
-                                3, 
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.tags.h6({"class": "output_text"}, "Token 1"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.tags.h6({"class": "output_text"}, "Token 2"),
-                            ), 
-                            ui.column(
-                                3, 
-                            ), 
-                        ),
-                        ## Output the Tokens in the Pool 
-                        ui.row(
-                            ui.column(
-                                3, 
-                            ), 
-                            ui.column(
-                                3,
-                                ui.output_text_verbatim("symbol0"),
-                            ),
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("symbol1"),
-                            ), 
-                            ui.column(
-                                3, 
-                            ), 
-                        ),
-                        ## Get Current Token Price 
-                        ui.row(
-                            ui.column(
-                                3, 
-                                ui.tags.h6({"class": "col-label"}, "Token Price (USD)"), 
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("price0"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("price1"),
-                            ), 
-                            ui.column(
-                                3, 
-                            ), 
-                        ), 
-                        ## Last block updates
-                        ui.row(
-                            ui.column(
-                                12, 
-                                ui.output_text_verbatim("last_time"), 
-                            ), 
-                        ), 
-                        ## Last block 
-                        ui.row(
-                            ui.column(
-                                12, 
-                                ui.output_text_verbatim("last_block"), 
-                            ), 
-                        ), 
-                        ## Line Break 
-                        ui.row(
-                            ui.hr()
-                        ),
-                        ## Section Title
-                        ui.row(
-                            ui.tags.h5({"class": "heading"}, "Swap Parameters"), 
-                        ), 
-                        ## Input Token In
-                        ui.row(
-                            ui.column(
-                                3,
-                                ui.tags.h6({"class": "col-label"}, "Token In"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.input_text("t_in", None, value = 'ATOM'),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.input_numeric("t_in_amt", None, value = 1),
-                            ), 
-                            ui.column(
-                                3, 
-                            ), 
-                        ), 
-                        ## Token Out 
-                        ## Input Number Of Tokens
-                        ui.row(
-                            ui.column(
-                                3,
-                                ui.tags.h6({"class": "col-label"}, "Token Out"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("t_out"),
-                            ), 
-                            ## Need to change this to output
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("t_out_amt"),
-                            ), 
-                            ui.column(
-                                3, 
-                            ), 
-                        ),
-                        ## Slippage Losses
-                        ui.row(
-                            ui.column(
-                                3,
-                                ui.tags.h6({"class": "col-label"}, "Slippage"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("t_slip"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("usd_slip"),
-                            ), 
-                            ui.column(
-                                3, 
-                            ), 
-                        ),
-                        ## Fees Paid
-                        ui.row(
-                            ui.column(
-                                3,
-                                ui.tags.h6({"class": "col-label"}, "Fees Paid"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("fee_paid"),
-                            ), 
-                            ui.column(
-                                3, 
-                                ui.output_text_verbatim("usd_fee"),
-                            ), 
-                            ui.column(
-                                3, 
-                            ), 
+                        ui.column(
+                            3, 
                         ),
                     ), 
-                ), 
-                ## Right Hand Column
-                ui.column(
-                    6,
-                    ui.tags.div({"class": "col"}, 
-                        ## Pool Price
-                        ui.row(
-                            ui.tags.h5({"class": "pool-price"}, "Pool Price"), 
+                    # Pool Fee Input Values
+                    ui.row(
+                        ui.column(
+                            3, 
                         ), 
-                        ui.row(
-                            ui.output_text_verbatim("pool_price"), 
+                        ui.column(
+                            6, 
+                            ui.input_numeric("pool_fee", "Percentage Swap Fee", value=0.2), 
                         ), 
-                        ## Chart of Pool Price 
-                        ui.row(
-                            ui.output_plot("rel_pool_price")
-                        ),
-                        ## Pool Depth
-                        ui.row(
-                            ui.tags.h5({"class": "pool-price"}, "Pool Depth"), 
-                        ), 
-                        ui.row(
-                            ui.output_plot("rel_pool_depth")
+                        ui.column(
+                            3, 
                         ),
                     ), 
+                    ## Token 1 & Token 2 Labels
+                    ui.row(
+                        ui.column(
+                            3, 
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.tags.h6({"class": "output_text"}, "Token 1"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.tags.h6({"class": "output_text"}, "Token 2"),
+                        ), 
+                        ui.column(
+                            3, 
+                        ), 
+                    ),
+                    ## Output the Tokens in the Pool 
+                    ui.row(
+                        ui.column(
+                            3, 
+                        ), 
+                        ui.column(
+                            3,
+                            ui.output_text_verbatim("symbol0"),
+                        ),
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("symbol1"),
+                        ), 
+                        ui.column(
+                            3, 
+                        ), 
+                    ),
+                    ## Get Current Token Price 
+                    ui.row(
+                        ui.column(
+                            3, 
+                            ui.tags.h6({"class": "col-label"}, "Token Price (USD)"), 
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("price0"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("price1"),
+                        ), 
+                        ui.column(
+                            3, 
+                        ), 
+                    ), 
+                    ## Last block updates
+                    ui.row(
+                        ui.column(
+                            12, 
+                            ui.output_text_verbatim("last_time"), 
+                        ), 
+                    ), 
+                    ## Last block 
+                    ui.row(
+                        ui.column(
+                            12, 
+                            ui.output_text_verbatim("last_block"), 
+                        ), 
+                    ), 
+                    ## Line Break 
+                    ui.row(
+                        ui.hr()
+                    ),
+                    ## Section Title
+                    ui.row(
+                        ui.tags.h5({"class": "heading"}, "Swap Parameters"), 
+                    ), 
+                    ## Input Token In
+                    ui.row(
+                        ui.column(
+                            3,
+                            ui.tags.h6({"class": "col-label"}, "Token In"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.input_text("t_in", None, value = 'ATOM'),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.input_numeric("t_in_amt", None, value = 1),
+                        ), 
+                        ui.column(
+                            3, 
+                        ), 
+                    ), 
+                    ## Token Out 
+                    ## Input Number Of Tokens
+                    ui.row(
+                        ui.column(
+                            3,
+                            ui.tags.h6({"class": "col-label"}, "Token Out"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("t_out"),
+                        ), 
+                        ## Need to change this to output
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("t_out_amt"),
+                        ), 
+                        ui.column(
+                            3, 
+                        ), 
+                    ),
+                    ## Slippage Losses
+                    ui.row(
+                        ui.column(
+                            3,
+                            ui.tags.h6({"class": "col-label"}, "Slippage"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("t_slip"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("usd_slip"),
+                        ), 
+                        ui.column(
+                            3, 
+                        ), 
+                    ),
+                    ## Fees Paid
+                    ui.row(
+                        ui.column(
+                            3,
+                            ui.tags.h6({"class": "col-label"}, "Fees Paid"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("fee_paid"),
+                        ), 
+                        ui.column(
+                            3, 
+                            ui.output_text_verbatim("usd_fee"),
+                        ), 
+                        ui.column(
+                            3, 
+                        ), 
+                    ),
                 ), 
-            ),
+            ), 
+            ## Right Hand Column
+            ui.column(
+                6,
+                ui.tags.div({"class": "col-left"}, 
+                    ## Pool Price
+                    ui.row(
+                        ui.tags.h5({"class": "pool-price"}, "Pool Price"), 
+                    ), 
+                    ui.row(
+                        ui.output_text_verbatim("pool_price"), 
+                    ), 
+                    ## Chart of Pool Price 
+                    ui.row(
+                        ui.output_plot("rel_pool_price")
+                    ),
+                    ## Pool Depth
+                    ui.row(
+                        ui.tags.h5({"class": "pool-price"}, "Pool Depth"), 
+                    ), 
+                    ui.row(
+                        ui.output_plot("rel_pool_depth")
+                    ),
+                ), 
+            ), 
         ),
+    ),
+    ## Add some spacing :) 
+    ui.row(
+        ui.tags.div({"class":"break"}, 
+            ui.hr()
+        ), 
+    ), 
+    ## Row with bottom columns
+    ui.row(
+        ui.tags.div({"class": "double-col"}, {"id": "group"},
+             ## Pool Information Column
+            ui.column(
+                6,
+                ui.tags.div({"class": "col-right"},  
+                    ui.row(
+                        ui.tags.h5({"class": "heading"}, "Slippage Calculation"), 
+                    ), 
+                ), 
+            ), 
+            ui.column(
+                6, 
+                ui.tags.div({"class": "col-left"}, 
+                    ui.row(
+                        ui.tags.h5({"class": "heading"}, "Dynamic Pool Depth"), 
+                    ), 
+                ), 
+            ), 
+        ), 
+    ), 
 )
 
 def server(input: Inputs, output: Outputs, session: Session):
