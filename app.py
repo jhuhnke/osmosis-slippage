@@ -170,6 +170,9 @@ app_ui = ui.page_fixed(
                     ui.row(
                         ui.tags.h5({"class": "heading"}, "Swap Parameters"), 
                     ), 
+                    ui.row(
+                        ui.tags.p({"class": "instructions"}, "Type token symbol and amount in boxes below")
+                    ),
                     ## Input Token In
                     ui.row(
                         ui.column(
@@ -263,7 +266,7 @@ app_ui = ui.page_fixed(
                     ),
                     ## Pool Depth
                     ui.row(
-                        ui.tags.h5({"class": "pool-price"}, "Pool Depth"), 
+                        ui.tags.h5({"class": "pool-depth"}, "Pool Depth"), 
                     ), 
                     ui.row(
                         ui.output_plot("rel_pool_depth")
@@ -277,6 +280,18 @@ app_ui = ui.page_fixed(
         ui.tags.div({"class":"break"}, 
             ui.hr()
         ), 
+    ), 
+    ## Row with bottom columns
+    ui.row(
+        ## What this Application Does 
+        ui.column(
+            12,
+            ui.tags.div({"class": "col-right"},  
+                ui.row(
+                    ui.tags.h6({"class": "paragraph"}, "This calculator is not investment advice, use it at your own risk and always DYOR. Questions? Find me on", ui.tags.a("Twitter", href="https://twitter.com/web3_analyst"), "and let's chat!"),
+                ), 
+            ), 
+        ),  
     ), 
     ## Row with bottom columns
     ui.row(

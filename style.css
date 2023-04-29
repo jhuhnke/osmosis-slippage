@@ -60,12 +60,12 @@ body {
 .instructions {
     color: #d2d0ff;
     margin: 5px;
+    padding: 10px;
 }
 
 .shiny-bound-input:not(:hover) {
     text-align: right;
     color: #d2d0ff; 
-    padding: 5px; 
     background-color: #140e35;
     outline-width: light;
     outline-color: #e13cbd;
@@ -78,7 +78,6 @@ body {
 .shiny-bound-input:hover {
     text-align: right;
     color: #d2d0ff; 
-    padding: 5px; 
     background-color: #140e35;
     outline-width: light;
     outline-color: #e13cbd;
@@ -102,7 +101,15 @@ body {
 .pool-price {
     color: #fff; 
     margin: 5px; 
-    text-align: center;
+    padding: 10px; 
+    text-align: left;
+}
+
+.pool-depth {
+    color: #fff; 
+    margin: 5px; 
+    padding-top: 10px;
+    text-align: left;
 }
 
 .control-label {
