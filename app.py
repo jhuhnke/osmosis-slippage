@@ -134,7 +134,7 @@ app_ui = ui.page_fixed(
                     ui.row(
                         ui.column(
                             3, 
-                            ui.tags.h6({"class": "col-label"}, "Token Price (USD)"), 
+                            ui.tags.h6({"class": "col-label"}, "Token Price"), 
                         ), 
                         ui.column(
                             3, 
@@ -275,36 +275,16 @@ app_ui = ui.page_fixed(
             ), 
         ),
     ),
-    ## Add some spacing :) 
-    ui.row(
-        ui.tags.div({"class":"break"}, 
-            ui.hr()
-        ), 
-    ), 
     ## Row with bottom columns
-    ui.row(
-        ## What this Application Does 
-        ui.column(
-            12,
-            ui.tags.div({"class": "col-right"},  
-                ui.row(
-                    ui.tags.h6({"class": "paragraph"}, "This calculator is not investment advice, use it at your own risk and always DYOR. Questions? Find me on", ui.tags.a("Twitter", href="https://twitter.com/web3_analyst"), "and let's chat!"),
-                ), 
-            ), 
-        ),  
-    ), 
-    ## Row with bottom columns
-    ui.row(
+    ui.row({"class":"bottom"}, 
         ## DYOR 
         ui.column(
             12,
-            ui.tags.div({"class": "col-right"},  
-                ui.row(
-                    ui.tags.h6({"class": "paragraph"}, "This calculator is not investment advice, use it at your own risk and always DYOR. Questions? Find me on", ui.tags.a("Twitter", href="https://twitter.com/web3_analyst"), "and let's chat!"),
-                ), 
-            ), 
-        ),  
-    ), 
+            ui.row(
+                ui.tags.h6({"class": "paragraph"}, "IMPORTANT: This calculator is not investment advice, use it at your own risk and always DYOR. Questions? Find me on", ui.tags.a("Twitter", href="https://twitter.com/web3_analyst"), "and let's chat!"),
+            ),  
+        ), 
+    ),
 )
 
 def server(input: Inputs, output: Outputs, session: Session):

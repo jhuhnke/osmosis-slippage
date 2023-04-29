@@ -1,3 +1,8 @@
+html * {
+    font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    font-feature-settings: normal; 
+}
+
 body {
     background-color: #080424;
     background-repeat: repeat-y;
@@ -8,6 +13,10 @@ body {
 
 .head {
     padding: 10px;
+}
+
+.row {
+    width: 100%;
 }
 
 .title {
@@ -24,8 +33,16 @@ body {
 
 .double-col {
     width: 100%;
-    min-height: 300px; 
+    background-color: #140e35;
     margin: 0 auto; 
+    display: -webkit-flex; 
+    display: flex;  
+}
+
+.bottom {
+    width: 100%;
+    background-color: #140e35;
+    padding: 10px; 
     display: -webkit-flex; 
     display: flex;  
 }
@@ -63,10 +80,26 @@ body {
     padding: 10px;
 }
 
+.paragraph {
+    color: #d2d0ff; 
+    margin: 5px; 
+    padding-left: 30px; 
+    padding-bottom: 10px;
+    padding-top: 0px;
+}
+
+a {
+    color: #d2d0ff; 
+}
+
+a:hover {
+    color: #e13cbd; 
+}
+
 .shiny-bound-input:not(:hover) {
     text-align: right;
     color: #d2d0ff; 
-    background-color: #140e35;
+    background-color: #080424;
     outline-width: light;
     outline-color: #e13cbd;
     outline-style: solid;
@@ -78,7 +111,7 @@ body {
 .shiny-bound-input:hover {
     text-align: right;
     color: #d2d0ff; 
-    background-color: #140e35;
+    background-color: #080424;
     outline-width: light;
     outline-color: #e13cbd;
     outline-style: solid;
