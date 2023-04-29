@@ -38,18 +38,20 @@ app_ui = ui.page_fixed(
         ),
     ),
     ## Title / Heading 
-    ui.row(
-        ui.column(
-            6, 
-            ui.tags.h2({"class": "title"}, "Osmosis Swap Simulator")
+    ui.tags.div({"class": "head"},
+        ui.row(
+            ui.column(
+                1, 
+                ui.tags.div({"class": "title_icon"})
+            ),
+            ui.column(
+                10, 
+                ui.tags.h1({"class": "title"}, "Osmosis Swap Simulator")
+            ), 
+            ui.column(
+                1, 
+            ),
         ), 
-        ui.column(
-            3, 
-        ), 
-        ui.column(
-            3, 
-            ui.tags.h4({"class": "plug"}, "Data By Flipside")
-        )
     ), 
     ## Line Break 
     ui.row(
@@ -278,25 +280,15 @@ app_ui = ui.page_fixed(
     ), 
     ## Row with bottom columns
     ui.row(
-        ui.tags.div({"class": "double-col"}, {"id": "group"},
-             ## Pool Information Column
-            ui.column(
-                6,
-                ui.tags.div({"class": "col-right"},  
-                    ui.row(
-                        ui.tags.h5({"class": "heading"}, "Slippage Calculation"), 
-                    ), 
+        ## DYOR 
+        ui.column(
+            12,
+            ui.tags.div({"class": "col-right"},  
+                ui.row(
+                    ui.tags.h6({"class": "paragraph"}, "This calculator is not investment advice, use it at your own risk and always DYOR. Questions? Find me on", ui.tags.a("Twitter", href="https://twitter.com/web3_analyst"), "and let's chat!"),
                 ), 
             ), 
-            ui.column(
-                6, 
-                ui.tags.div({"class": "col-left"}, 
-                    ui.row(
-                        ui.tags.h5({"class": "heading"}, "Dynamic Pool Depth"), 
-                    ), 
-                ), 
-            ), 
-        ), 
+        ),  
     ), 
 )
 

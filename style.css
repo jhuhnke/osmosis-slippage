@@ -6,20 +6,20 @@ body {
     background-size: cover;
 }
 
+.head {
+    padding: 10px;
+}
+
 .title {
     color: #d2d0ff; 
-    margin: 10px; 
-    padding: 10px; 
-    text-align: left; 
+    text-align: center; 
     vertical-align: bottom;
 }
 
-.plug {
-    color: #d2d0ff; 
-    margin: 10px; 
-    padding: 10px; 
-    text-align: center; 
-    vertical-align: bottom;
+.col-sm-1 {
+    background-image: url('osmosis-logo.svg'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
 }
 
 .double-col {
