@@ -328,23 +328,22 @@ def server(input: Inputs, output: Outputs, session: Session):
         amt1 = pool_depth.loc[pool_depth["POOL_ID"] == int(input.pool())+1, "TOKEN_1_AMOUNT"]
 
         time = pool_depth.loc[int(input.pool()), "BLOCK_TIMESTAMP"]
-        print(time)
         block = pool_depth.loc[int(input.pool()), "BLOCK_ID"]
 
-        if input.t_in() == asset0: 
-            t_out_amt1 = amt1.values - (amt0.values*amt1.values)/(amt0.values+input.t_in_amt())
+        if input.t_in() == asset1: 
+            t_out_amt1 = amt1.values - ((amt0.values*amt1.values)/(amt0.values+input.t_in_amt()))
             fee = t_out_amt1*input.pool_fee()/100
             t_out_amt = t_out_amt1 - fee
-            usd_out_amt = price1*t_out_amt
-            usd_fee = fee*price1
-        else: 
-            t_out_amt1 = amt0.values - (amt0.values*amt1.values)/(amt1.values+input.t_in_amt()) 
-            fee = t_out_amt1*input.pool_fee()/100
-            t_out_amt = t_out_amt1 - fee
-            usd_out_amt = price0*t_out_amt
+            usd_out_amt = price0*1
             usd_fee = fee*price0
+        else: 
+            t_out_amt1 = amt0.values - ((amt0.values*amt1.values)/(amt1.values+input.t_in_amt())) 
+            fee = t_out_amt1*input.pool_fee()/100
+            t_out_amt = t_out_amt1 - fee
+            usd_out_amt = price1*1
+            usd_fee = fee*price1
 
-        return price0, price1, rel_price, asset0, asset1, out_exp_amt, t_out_amt, usd_out_amt, time, block, fee, usd_fee
+        return price0, price1, rel_price, asset0, asset1, t_out_amt1, t_out_amt, usd_out_amt, time, block, fee, usd_fee, out_exp_amt
     
     @output
     @render.text
@@ -396,20 +395,20 @@ def server(input: Inputs, output: Outputs, session: Session):
     @render.text 
     async def t_out_amt(): 
         prices = await get_price()
-        return f"{round(prices[5] - prices[6][0], 3)}"
+        return f"{round(prices[6][0], 3)}"
     
     ## Slippage Output 
     @output
     @render.text
     async def t_slip(): 
         prices = await get_price()
-        return f"{round(prices[6][0], 3)}"
+        return f"{round(abs(prices[12]-prices[6][0]), 3)}"
     
     @output 
     @render.text 
     async def usd_slip(): 
         prices = await get_price()
-        return f"${round(prices[7][0], 3)}"
+        return f"${round(prices[7]*(abs(prices[12]-prices[6][0])), 3)}"
     
     ## Recency Outputs 
     @output
