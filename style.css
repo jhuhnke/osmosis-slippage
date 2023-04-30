@@ -81,15 +81,11 @@ body {
 }
 
 .paragraph {
-    color: #d2d0ff; 
+    color: #080424; 
     margin: 5px; 
     padding-left: 30px; 
     padding-bottom: 10px;
     padding-top: 0px;
-}
-
-a {
-    color: #d2d0ff; 
 }
 
 a:hover {
