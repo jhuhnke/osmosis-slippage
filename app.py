@@ -542,5 +542,5 @@ def server(input: Inputs, output: Outputs, session: Session):
 
         return fig
 
-www_dir = Path(__file__).parent / "www"
+www_dir = Path(__file__).parent 
 app = App(app_ui, server, debug=True, static_assets=www_dir)

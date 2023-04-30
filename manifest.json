@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "locale": "en_US.cp1252",
+  "metadata": {
+    "appmode": "python-shiny",
+    "entrypoint": "app"
+  },
+  "python": {
+    "version": "3.10.7",
+    "package_manager": {
+      "name": "pip",
+      "version": "22.2.2",
+      "package_file": "requirements.txt"
+    }
+  },
+  "files": {
+    "requirements.txt": {
+      "checksum": "9a30e17bc49d09ea17f116373720b8bf"
+    },
+    ".gitignore": {
+      "checksum": "027f33d499f22a5569d6996cc161cad8"
+    },
+    "LICENSE": {
+      "checksum": "e62637ea8a114355b985fd86c9ffbd6e"
+    },
+    "README.md": {
+      "checksum": "0395e5cb1e82de7f87a2199bcf18c210"
+    },
+    "app.py": {
+      "checksum": "205a5bf312fc7d595cbdda8f2682f0c7"
+    },
+    "bitmap.png": {
+      "checksum": "ab63dadf12b1e821e68352a58060f8d8"
+    },
+    "bitmap2.png": {
+      "checksum": "6f4560eefc5598c71107ab7fc3dc9acc"
+    },
+    "column-height.js": {
+      "checksum": "75f8b446ce772ac42ebb09f3a0c1731f"
+    },
+    "osmosis-logo.svg": {
+      "checksum": "0a4cdf75eb266feddd1f7e51190c71ef"
+    },
+    "style.css": {
+      "checksum": "d77d4fb0aa51b11f0724970132d6b085"
+    }
+  }
+}
