@@ -11,7 +11,7 @@ Right now, this application utilizes [Flipside Crypto](https://flipsidecrypto.xy
 
 #### Flipside Crypto
 
-To access the Flipside Crypto dataset, you will need a [ShroomDK API Key](https://sdk.flipsidecrypto.xyz/shroomdk). This API key is free to obtain and use once you mint it as an NFT on ETH mainnet. Ensure you have some ETH in your Metamask as gas for the minting transaction.  
+To access the Flipside Crypto dataset, you will need an API key. To obtain an API key, sign up for the app and navigate to the key management page. Another solution is to write your query in the data application, and access the query via the API button on the top right hand side of the page. 
 
 Alternatively, you can visit app.flipsidecrypto.com and sign up for an account using either your Discord, ETH wallet, or email. Write your query in the application's query editor, set an appropriate refresh rate in the upper right corner, and use the API button to generate a URL. Use this URL as a GET request in your code, and the Python json library to parse the query results. 
 
